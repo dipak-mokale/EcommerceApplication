@@ -6,7 +6,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		Operations operations = new Operations();
 		operations.displayOperations();
-		System.out.println("Thanks for using app !");
+		Greet.greetUser();
 	}
 
 }

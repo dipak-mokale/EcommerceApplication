@@ -11,6 +11,7 @@ public class UserOperations {
 	JDBCConnect jdbcConnect = new JDBCConnect();
 	Connection connection = null;
 	PreparedStatement ps = null;
+	ResultSet rs = null;
 
 	public void userRegistration() {
 
@@ -27,7 +28,7 @@ public class UserOperations {
 		System.out.print("Enter the mail id >> ");
 		String mail = scanner.next();
 		System.out.print("Enter the mobile number >> ");
-		long mobile = scanner.nextInt();
+		long mobile = scanner.nextLong();
 
 		connection = jdbcConnect.getConnection();
 
@@ -44,7 +45,8 @@ public class UserOperations {
 			ps.setLong(7, mobile);
 
 			ps.execute();
-
+			System.out.println();
+			System.out.println("User Registration Done Sucessfully ! ");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +76,7 @@ public class UserOperations {
 		String sqlQuery = "SELECT * FROM users";
 		try {
 			ps = connection.prepareStatement(sqlQuery);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 
 			while (rs.next()) {
 				if (rs.getString(3).equals(username) && rs.getString(4).equals(password)) {
@@ -100,6 +102,38 @@ public class UserOperations {
 			}
 
 		}
+	}
+
+	public void viewProducts() {
+		// TODO Auto-generated method stub
+		connection = jdbcConnect.getConnection();
+
+		String sqlQuery = "select * from products";
+		try {
+			ps = connection.prepareStatement(sqlQuery);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				System.out.println("ID >> " + rs.getString(1));
+				System.out.println("Name >> " + rs.getString(2));
+				System.out.println("Description >> " + rs.getString(3));
+				System.out.println("Available Quantity >> " + rs.getString(4));
+				System.out.println("Price >> " + rs.getString(5));
+				System.out.println("-------------------------------------");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				this.ps.close();
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 }

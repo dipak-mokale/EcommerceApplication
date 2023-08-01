@@ -53,6 +53,8 @@ public class Operations {
 			getOperationList();
 			break;
 		case 3:
+			userOperations.viewProducts();
+			getOperationList();
 
 		}
 
