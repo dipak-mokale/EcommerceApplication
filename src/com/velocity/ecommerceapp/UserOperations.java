@@ -2,16 +2,18 @@ package com.velocity.ecommerceapp;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserOperations {
 	Scanner scanner = new Scanner(System.in);
+	JDBCConnect jdbcConnect = new JDBCConnect();
 	Connection connection = null;
 	PreparedStatement ps = null;
-	
- 	public void userRegistration() {
-		
+
+	public void userRegistration() {
+
 		System.out.print("Enter the first name >> ");
 		String firstName = scanner.next();
 		System.out.print("Enter the last name >> ");
@@ -25,11 +27,10 @@ public class UserOperations {
 		System.out.print("Enter the mail id >> ");
 		String mail = scanner.next();
 		System.out.print("Enter the mobile number >> ");
-		int mobile = scanner.nextInt();
-		
-		JDBCConnect jdbcConnect = new JDBCConnect();
+		long mobile = scanner.nextInt();
+
 		connection = jdbcConnect.getConnection();
-		
+
 		String sqlQuery = "insert into users (FirstName, LastName, UserName, Password, City , MainID, Mobile) "
 				+ "values (?,?,?,?,?,?,?)";
 		try {
@@ -40,15 +41,14 @@ public class UserOperations {
 			ps.setString(4, password);
 			ps.setString(5, city);
 			ps.setString(6, mail);
-			ps.setInt(7, mobile);
-			
+			ps.setLong(7, mobile);
+
 			ps.execute();
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				ps.close();
 				connection.close();
@@ -56,7 +56,49 @@ public class UserOperations {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
+		}
+	}
+
+	public void userLogin() {
+		// TODO Auto-generated method stub
+		connection = jdbcConnect.getConnection();
+		boolean flag = false;
+		int count = 0;
+
+		System.out.println("Enter the username >> ");
+		String username = scanner.next();
+		System.out.println("Enter the password >> ");
+		String password = scanner.next();
+
+		String sqlQuery = "SELECT * FROM users";
+		try {
+			ps = connection.prepareStatement(sqlQuery);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getString(3).equals(username) && rs.getString(4).equals(password)) {
+					System.out.println("Logged in !");
+					flag = true;
+					break;
+				}
+			}
+			if (flag != true) {
+				System.out.println("Invalid Username & password !");
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				this.ps.close();
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 	}
 

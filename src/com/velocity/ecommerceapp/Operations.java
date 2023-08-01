@@ -3,7 +3,10 @@ package com.velocity.ecommerceapp;
 import java.util.Scanner;
 
 public class Operations {
+	Scanner scanner = new Scanner(System.in);
+
 	@SuppressWarnings("resource")
+
 	public void displayOperations() {
 		System.out.println("Welcome to E-Commerce based Application");
 		System.out.println();
@@ -27,11 +30,15 @@ public class Operations {
 		System.out.println("\t 13. View Product Item");
 		System.out.println("\t 14. Not Purchased Item");
 		System.out.println();
-		
+
 		System.out.print("Enter your choice - ");
 		Integer userChoice = new Scanner(System.in).nextInt();
-		
-		opertaionToExecute(userChoice);
+		if (userChoice >= 1 && userChoice <= 14) {
+			opertaionToExecute(userChoice);
+		} else {
+			System.out.println("Plese enter a valid choice !");
+			getOperationList();
+		}
 	}
 
 	private void opertaionToExecute(Integer userChoice) {
@@ -39,13 +46,31 @@ public class Operations {
 		switch (userChoice) {
 		case 1:
 			userOperations.userRegistration();
+			getOperationList();
 			break;
+		case 2:
+			userOperations.userLogin();
+			getOperationList();
+			break;
+		case 3:
 
-		default:
+		}
+
+	}
+
+	private void getOperationList() {
+		// TODO Auto-generated method stub
+		System.out.println();
+		System.out.println("Want to continue ?");
+		System.out.println("1. Operations Menu \t 2. Exit");
+		int userChoice = scanner.nextInt();
+		switch (userChoice) {
+		case 1:
+			displayOperations();
+			break;
+		case 2:
 			break;
 		}
-		
-		
-		
+
 	}
 }
