@@ -55,7 +55,10 @@ public class Operations {
 		case 3:
 			userOperations.viewProducts();
 			getOperationList();
-
+			break;
+		case 4:
+			userOperations.buyProduct();
+			getOperationList();
 		}
 
 	}

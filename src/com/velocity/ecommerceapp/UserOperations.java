@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.plaf.metal.OceanTheme;
 
 public class UserOperations {
 	Scanner scanner = new Scanner(System.in);
@@ -12,6 +15,8 @@ public class UserOperations {
 	Connection connection = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
+	ArrayList<Cart> cart = new ArrayList<>();
+	int totalBill = 0;
 
 	public void userRegistration() {
 
@@ -108,7 +113,7 @@ public class UserOperations {
 		// TODO Auto-generated method stub
 		connection = jdbcConnect.getConnection();
 
-		String sqlQuery = "select * from products";
+		String sqlQuery = "select * from products order by Name asc";
 		try {
 			ps = connection.prepareStatement(sqlQuery);
 			rs = ps.executeQuery();
@@ -134,6 +139,39 @@ public class UserOperations {
 
 		}
 
+	}
+
+	public void buyProduct() {
+		// TODO Auto-generated method stub
+		System.out.println("Enter the product id to buy >> ");
+		int productid = scanner.nextInt();
+		System.out.println("Enter the product qunatity >> ");
+		int productQuantity = scanner.nextInt();
+
+		try {
+			String sql = "select * from products";
+			connection = jdbcConnect.getConnection();
+			ps = connection.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				if (rs.getInt(1) == productid && rs.getInt(4) > productQuantity) {
+					cart.add(new Cart(rs.getInt(1), rs.getString(2), productQuantity, rs.getInt(5)));
+					totalBill = totalBill + productQuantity * rs.getInt(5);
+				}
+			}
+			System.out.println("1. Buy more ? \t 2. View Cart");
+			int choice = scanner.nextInt();
+			if (choice == 1) {
+				buyProduct();
+			} else {
+				System.out.println(cart);
+				System.out.println("Total Bill >> " + totalBill);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
