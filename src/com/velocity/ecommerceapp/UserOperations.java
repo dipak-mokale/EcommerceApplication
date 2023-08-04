@@ -71,7 +71,6 @@ public class UserOperations {
 		// TODO Auto-generated method stub
 		connection = jdbcConnect.getConnection();
 		boolean flag = false;
-		int count = 0;
 
 		System.out.println("Enter the username >> ");
 		String username = scanner.next();
