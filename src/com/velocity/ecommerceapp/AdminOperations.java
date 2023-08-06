@@ -219,4 +219,36 @@ public class AdminOperations {
 
 	}
 
+	public void geustViewProductItems() {
+		// TODO Auto-generated method stub
+		connection = jdbcConnect.getConnection();
+
+		String sqlQuery = "select * from products order by Name asc";
+		try {
+			ps = connection.prepareStatement(sqlQuery);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				System.out.println("ID >> " + rs.getString(1));
+				System.out.println("Name >> " + rs.getString(2));
+				System.out.println("Description >> " + rs.getString(3));
+				System.out.println("Available Quantity >> " + rs.getString(4));
+				System.out.println("Price >> " + rs.getString(5));
+				System.out.println("-------------------------------------");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				this.ps.close();
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		
+	}
+
 }

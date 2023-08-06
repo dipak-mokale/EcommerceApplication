@@ -71,6 +71,10 @@ public class Operations {
 			adminOperations.checkRegisteredUsers();
 			getOperationList();
 			break;
+		case 11:
+			adminOperations.geustViewProductItems();
+			getOperationList();
+			break;
 		}
 
 	}
