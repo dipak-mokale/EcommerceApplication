@@ -37,7 +37,7 @@ public class UserOperations {
 
 		connection = jdbcConnect.getConnection();
 
-		String sqlQuery = "insert into users (FirstName, LastName, UserName, Password, City , MainID, Mobile) "
+		String sqlQuery = "insert into users (FirstName, LastName, UserName, Password, City , MailID, Mobile) "
 				+ "values (?,?,?,?,?,?,?)";
 		try {
 			ps = connection.prepareStatement(sqlQuery);
@@ -156,6 +156,8 @@ public class UserOperations {
 				if (rs.getInt(1) == productid && rs.getInt(4) > productQuantity) {
 					cart.add(new Cart(rs.getInt(1), rs.getString(2), productQuantity, rs.getInt(5)));
 					totalBill = totalBill + productQuantity * rs.getInt(5);
+					int pq = rs.getInt(4) - productQuantity;
+					deductQuantityFromDatabase(productid, pq);
 				}
 			}
 			System.out.println("1. Buy more ? \t 2. View Cart");
@@ -171,6 +173,33 @@ public class UserOperations {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void deductQuantityFromDatabase(int productid, int productQuantity) {
+		// TODO Auto-generated method stub
+		String sql = "update products set AvailableQuantity=? where ID=?";
+		connection = jdbcConnect.getConnection();
+		try {
+			ps = connection.prepareStatement(sql);
+
+			ps.setInt(1, productQuantity);
+			ps.setInt(2, productid);
+			ps.executeUpdate();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 }
