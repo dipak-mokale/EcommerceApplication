@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Operations {
 	Scanner scanner = new Scanner(System.in);
 
-
 	@SuppressWarnings("resource")
 
 	public void displayOperations() {
@@ -32,15 +31,15 @@ public class Operations {
 
 		System.out.print("Enter your choice - ");
 		Integer userChoice = new Scanner(System.in).nextInt();
-		if (userChoice >= 1 && userChoice <= 14) {
-			opertaionToExecute(userChoice);
+		if (userChoice >= 1 && userChoice <= 12) {
+			executeOperation(userChoice);
 		} else {
 			System.out.println("Plese enter a valid choice !");
 			getOperationList();
 		}
 	}
 
-	private void opertaionToExecute(Integer userChoice) {
+	private void executeOperation(Integer userChoice) {
 		UserOperations userOperations = new UserOperations();
 		AdminOperations adminOperations = new AdminOperations();
 		switch (userChoice) {
@@ -62,6 +61,14 @@ public class Operations {
 			break;
 		case 5:
 			adminOperations.addProduct();
+			getOperationList();
+			break;
+		case 8:
+			adminOperations.getQuantity();
+			getOperationList();
+			break;
+		case 9:
+			adminOperations.checkRegisteredUsers();
 			getOperationList();
 			break;
 		}
